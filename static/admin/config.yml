@@ -7,7 +7,7 @@ public_folder: "../../static/images/"
 
 collections:
   - name: "blog"
-    preview:false
+    preview: false
     label: "Blog"
     folder: "content/blog"
     create: true
