@@ -1,120 +1,112 @@
 import * as React from "react"
-import { Link } from "gatsby"
-import { StaticImage } from "gatsby-plugin-image"
+import { graphql, Link } from "gatsby"
+import { getImage, GatsbyImage } from "gatsby-plugin-image"
 
 import Layout from "../components/layout"
 import Seo from "../components/seo"
-import * as styles from "../components/index.module.css"
 
-const links = [
-  {
-    text: "Tutorial",
-    url: "https://www.gatsbyjs.com/docs/tutorial",
-    description:
-      "A great place to get started if you're new to web development. Designed to guide you through setting up your first Gatsby site.",
-  },
-  {
-    text: "Examples",
-    url: "https://github.com/gatsbyjs/gatsby/tree/master/examples",
-    description:
-      "A collection of websites ranging from very basic to complex/complete that illustrate how to accomplish specific tasks within your Gatsby sites.",
-  },
-  {
-    text: "Plugin Library",
-    url: "https://www.gatsbyjs.com/plugins",
-    description:
-      "Learn how to add functionality and customize your Gatsby site or app with thousands of plugins built by our amazing developer community.",
-  },
-  {
-    text: "Build and Host",
-    url: "https://www.gatsbyjs.com/cloud",
-    description:
-      "Now you’re ready to show the world! Give your Gatsby site superpowers: Build and host on Gatsby Cloud. Get started for free!",
-  },
-]
-
-const samplePageLinks = [
-  {
-    text: "Page 2",
-    url: "page-2",
-    badge: false,
-    description:
-      "A simple example of linking to another page within a Gatsby site",
-  },
-  { text: "TypeScript", url: "using-typescript" },
-  { text: "Server Side Rendering", url: "using-ssr" },
-  { text: "Deferred Static Generation", url: "using-dsg" },
-]
-
-const moreLinks = [
-  { text: "Join us on Discord", url: "https://gatsby.dev/discord" },
-  {
-    text: "Documentation",
-    url: "https://gatsbyjs.com/docs/",
-  },
-  {
-    text: "Starters",
-    url: "https://gatsbyjs.com/starters/",
-  },
-  {
-    text: "Showcase",
-    url: "https://gatsbyjs.com/showcase/",
-  },
-  {
-    text: "Contributing",
-    url: "https://www.gatsbyjs.com/contributing/",
-  },
-  { text: "Issues", url: "https://github.com/gatsbyjs/gatsby/issues" },
-]
-
-const utmParameters = `?utm_source=starter&utm_medium=start-page&utm_campaign=default-starter`
-
-const IndexPage = () => (
+const IndexPage = ({ data }) => (
   <Layout>
-    <div className={styles.textCenter}>
-      <StaticImage
-        src="../images/example.png"
-        loading="eager"
-        width={64}
-        quality={95}
-        formats={["auto", "webp", "avif"]}
-        alt=""
-        style={{ marginBottom: `var(--space-3)` }}
-      />
-      <h1>
-        Welcome to <b>Gatsby!</b>
-      </h1>
-      <p className={styles.intro}>
-        <b>Example pages:</b>{" "}
-        {samplePageLinks.map((link, i) => (
-          <React.Fragment key={link.url}>
-            <Link to={link.url}>{link.text}</Link>
-            {i !== samplePageLinks.length - 1 && <> · </>}
-          </React.Fragment>
-        ))}
-        <br />
-        Edit <code>src/pages/index.js</code> to update this page.
-      </p>
-    </div>
-    <ul className={styles.list}>
-      {links.map(link => (
-        <li key={link.url} className={styles.listItem}>
-          <a
-            className={styles.listItemLink}
-            href={`${link.url}${utmParameters}`}
+    <section className="hero my-5">
+      <div className="container ">
+        <div className="row">
+          <div className="col-6">
+            <div style={{ maxWidth: "450px" }} className="hero__content">
+              <h1 className="section-title" style={{ color: "#005243" }}>
+                Welcome to my blog!
+              </h1>
+              <p>
+                I use this space to document my adventures in front-end
+                development, sharing how I’ve overcome issues I’ve run into,
+                useful resources, and more.
+              </p>
+              <p>
+                Below are some of my favourite articles, or you can go to the
+                blog page to see my most recent posts.
+              </p>
+              <div className="flex-group">
+                <button
+                  style={{ backgroundColor: "#18846c", marginRight: "30px" }}
+                  className="btn text-white py-2 px-4"
+                >
+                  Featured articles
+                </button>
+                <button className="btn btn-light">Most recent articles</button>
+              </div>
+            </div>
+          </div>
+          <div className="col-6">
+            <div>
+              {/* <img src="//unsplash.it/510" alt className="hero__image" /> */}
+              <img
+                src="https://hoanghamobile.com/tin-tuc/wp-content/uploads/2024/11/tai-hinh-nen-dep-mien-phi.jpg"
+                alt=""
+                className="mg-fluid img-thumbnail"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section
+      style={{ backgroundColor: "#e9fbf8" }}
+      id="featured-articles"
+      className="featured-articles p-5"
+    >
+      <div className="container flow">
+        <div className="my-5">
+          <h2
+            style={{ color: "#005243" }}
+            className="section-title text-center "
           >
-            {link.text} ↗
-          </a>
-          <p className={styles.listItemDescription}>{link.description}</p>
-        </li>
-      ))}
-    </ul>
-    {moreLinks.map((link, i) => (
-      <React.Fragment key={link.url}>
-        <a href={`${link.url}${utmParameters}`}>{link.text}</a>
-        {i !== moreLinks.length - 1 && <> · </>}
-      </React.Fragment>
-    ))}
+            Featured articles
+          </h2>
+          <p className="text-center">
+            Here is a sample of articles which I feel give you a good idea of
+            what this site is all about.
+          </p>
+        </div>
+
+        {data.blogInformation?.edges?.map(({ node }) => (
+          <div key={node.id} className="row my-5">
+            <div className="col-6">
+              <h3 className="snippet__title">
+                <Link
+                  href="/blog/my-first-article/"
+                  className="text-black text-decoration-none"
+                >
+                  {node.frontmatter.title}
+                </Link>
+              </h3>
+              <p className="snippet__meta">
+                by <span>{node.frontmatter.author}</span> on{" "}
+                <span>{node.frontmatter.date}</span>
+              </p>
+              <p className="snippet__body">{node.frontmatter.description}</p>
+              {/* <a href="/blog/my-first-article/" className="btn btn--primary">
+                  Continue Reading
+                </a> */}
+              <button
+                style={{ backgroundColor: "#18846c", marginRight: "30px" }}
+                className="btn text-white py-2 px-4"
+              >
+                Continue Reading
+              </button>
+            </div>
+            <div className="col-6">
+              <GatsbyImage
+                image={getImage(node.frontmatter.image)}
+                alt={node.frontmatter.imageAlt || "Image"}
+              />
+            </div>
+          </div>
+          // <div key={node.id}>
+          //   <h2>{node.frontmatter.author}</h2>
+          // </div>
+        ))}
+      </div>
+    </section>
   </Layout>
 )
 
@@ -126,3 +118,29 @@ const IndexPage = () => (
 export const Head = () => <Seo title="Home" />
 
 export default IndexPage
+
+export const query = graphql`
+  query {
+    blogInformation: allMarkdownRemark {
+      edges {
+        node {
+          id
+          frontmatter {
+            author
+            date(difference: "")
+            description
+            imageAlt
+            tags
+            title
+            image {
+              base
+              childImageSharp {
+                gatsbyImageData(width: 600)
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`
